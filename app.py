@@ -81,7 +81,7 @@ client = Client(config.acct, config.key)
 
 def send_message():
     quote = get_daily_quote()
-    client.messages.create(to="+18022339897", from_="+12016167319", body=quote)
+    client.messages.create(to=config.mynum, from_=config.twilnum, body=quote)
 
 
 def get_daily_quote():
