@@ -10,7 +10,7 @@ import os
 
 # Init App + Scheduler
 app = Flask(__name__)
-schedule = BackgroundScheduler(daemon=True)
+# schedule = BackgroundScheduler(daemon=True)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -100,8 +100,8 @@ def get_daily_quote():
 
 
 #  Add Job to Scheduler
-schedule.add_job(send_message, trigger='cron', hour='9')
-schedule.start()
+# schedule.add_job(send_message, trigger='cron', hour='9')
+# schedule.start()
 
 
 # Run server
