@@ -77,10 +77,10 @@ def delete_quote(id):
 
 
 # Create client for twilio
-acct = int(os.environ.get('acct'))
-key = int(os.environ.get('key'))
-mynum = int(os.environ.get('mynum'))
-twilnum = int(os.environ.get('twilnum'))
+acct = str(os.environ.get('acct'))
+key = str(os.environ.get('key'))
+mynum = str(os.environ.get('mynum'))
+twilnum = str(os.environ.get('twilnum'))
 
 
 client = Client(acct, key)
