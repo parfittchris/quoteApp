@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from apscheduler.schedulers.background import BackgroundScheduler
 
-import config
+# import config
 import random
 import os
 
@@ -14,7 +14,8 @@ schedule = BackgroundScheduler(daemon=True)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'db.sqlite')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
+    os.path.join(basedir, 'db.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Init db
@@ -30,8 +31,6 @@ class Quote(db.Model):
 
     def __init__(self, quote):
         self.quote = quote
-
-   
 
 
 class QuoteSchema(ma.Schema):
@@ -50,6 +49,7 @@ def get_all_quotes():
     all_quotes = Quote.query.all()
     result = quotes_schema.dump(all_quotes)
     return jsonify(result)
+
 
 @app.route('/quote', methods=['POST'])
 def add_quote():
@@ -77,11 +77,18 @@ def delete_quote(id):
 
 
 # Create client for twilio
-client = Client(config.acct, config.key)
+acct = int(os.environ.get('acct'))
+key = int(os.environ.get('key'))
+mynum = int(os.environ.get('mynum'))
+twilnum = int(os.environ.get('twilnum'))
+
+
+client = Client(acct, key)
+
 
 def send_message():
     quote = get_daily_quote()
-    client.messages.create(to=config.mynum, from_=config.twilnum, body=quote)
+    client.messages.create(to=mynum, from_=twilnum, body=quote)
 
 
 def get_daily_quote():
@@ -97,11 +104,7 @@ schedule.add_job(send_message, trigger='cron', hour='8', minute='15')
 schedule.start()
 
 
-
 # Run server
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))
     app.run(host='0.0.0.0', port=port)
-
-
-
