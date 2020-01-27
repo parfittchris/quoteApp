@@ -100,7 +100,7 @@ def get_daily_quote():
 
 
 #  Add Job to Scheduler
-schedule.add_job(send_message, trigger='cron', hour='8', minute='15')
+schedule.add_job(send_message, trigger='cron', hour='9')
 schedule.start()
 
 
