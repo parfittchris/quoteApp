@@ -2,7 +2,6 @@ from twilio.rest import Client
 from flask import Flask, jsonify, request, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-from apscheduler.schedulers.background import BackgroundScheduler
 
 # import config
 import random
@@ -10,7 +9,6 @@ import os
 
 # Init App + Scheduler
 app = Flask(__name__)
-# schedule = BackgroundScheduler(daemon=True)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -44,6 +42,10 @@ quotes_schema = QuoteSchema(many=True)
 
 
 # Routes
+@app.route('/', methods=['GET'])
+def get(): 
+    return ''
+
 @app.route('/quote', methods=['GET'])
 def get_all_quotes():
     all_quotes = Quote.query.all()
@@ -97,11 +99,6 @@ def get_daily_quote():
     quote = Quote.query.get(number)
     result = quote_schema.dump(quote)
     return result["quote"]
-
-
-#  Add Job to Scheduler
-# schedule.add_job(send_message, trigger='cron', hour='9')
-# schedule.start()
 
 
 # Run server
